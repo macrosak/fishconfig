@@ -4,8 +4,10 @@ end
 
 function fish_prompt
   if set -q CMD_DURATION
-    echo \a(set_color 555555)\> Took $CMD_DURATION
-    set -l time_sec (echo $CMD_DURATION | cut -d'.' -f1)
+    set -l time_sec (math $CMD_DURATION/1000)
+    if test $time_sec -gt 0
+      echo \a(set_color 555555)\> Took $time_sec
+    end
     if test $time_sec -gt 10 ;and which terminal-notifier > /dev/null
       terminal-notifier -message "Shell command $history[1] is done!" -title "Command done"
     end
